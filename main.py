@@ -1,5 +1,5 @@
 from flask import Flask, request, abort
-
+import os
 from linebot import (
     LineBotApi, WebhookHandler
 )
@@ -9,7 +9,7 @@ from linebot.exceptions import (
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
 )
-import os
+
 
 app = Flask(__name__)
 
