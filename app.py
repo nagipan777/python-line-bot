@@ -14,7 +14,6 @@ from linebot.models import (
 
 app = Flask(__name__)
 
-# 環境変数からchannel_secret・channel_access_tokenを取得
 channel_secret = os.environ['LINE_CHANNEL_SECRET']
 channel_access_token = os.environ['LINE_CHANNEL_ACCESS_TOKEN']
 
