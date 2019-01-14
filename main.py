@@ -2,7 +2,7 @@ from flask import Flask, request, abort
 import os
 import sys
 from linebot import (
-    LineBotApi, WebhookHandler
+    LineBotApi, WebhookParser
 )
 from linebot.exceptions import (
     InvalidSignatureError
@@ -25,7 +25,7 @@ if channel_access_token is None:
     sys.exit(1)
 
 line_bot_api = LineBotApi(channel_access_token)
-parser = WebhookHandler(channel_secret)
+parser = WebhookParser(channel_secret)
 
 
 @app.route("/")
