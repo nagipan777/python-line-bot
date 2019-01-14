@@ -14,14 +14,14 @@ from linebot.models import (
 
 app = Flask(__name__)
 
-channel_secret = os.environ['LINE_CHANNEL_SECRET']
-channel_access_token = os.environ['LINE_CHANNEL_ACCESS_TOKEN']
+channel_secret = os.environ['YOUR_CHANNEL_SECRET']
+channel_access_token = os.environ['YOUR_CHANNEL_ACCESS_TOKEN']
 
 if channel_secret is None:
-    print('Specify LINE_CHANNEL_SECRET as environment variable.')
+    print('Specify YOUR_CHANNEL_SECRET as environment variable.')
     sys.exit(1)
 if channel_access_token is None:
-    print('Specify LINE_CHANNEL_ACCESS_TOKEN as environment variable.')
+    print('Specify YOUR_CHANNEL_ACCESS_TOKEN as environment variable.')
     sys.exit(1)
 
 line_bot_api = LineBotApi(channel_access_token)
@@ -41,11 +41,23 @@ def callback():
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
 
-    # handle webhook body
+     # parse webhook body
     try:
-        handler.handle(body, signature)
+        events = parser.parse(body, signature)
     except InvalidSignatureError:
         abort(400)
+
+    # if event is MessageEvent and message is TextMessage, then echo text
+    for event in events:
+        if not isinstance(event, MessageEvent):
+            continue
+        if not isinstance(event.message, TextMessage):
+            continue
+
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=event.message.text)
+        )
 
     return 'OK'
 
