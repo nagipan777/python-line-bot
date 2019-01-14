@@ -1,6 +1,6 @@
-from flask import Flask, request, abort
 import os
 import sys
+from flask import Flask, request, abort
 from linebot import (
     LineBotApi, WebhookParser
 )
@@ -14,8 +14,8 @@ from linebot.models import (
 
 app = Flask(__name__)
 
-channel_secret = os.environ['YOUR_CHANNEL_SECRET']
-channel_access_token = os.environ['YOUR_CHANNEL_ACCESS_TOKEN']
+channel_secret = os.getenv['YOUR_CHANNEL_SECRET']
+channel_access_token = os.getenv['YOUR_CHANNEL_ACCESS_TOKEN']
 
 if channel_secret is None:
     print('Specify YOUR_CHANNEL_SECRET as environment variable.')
