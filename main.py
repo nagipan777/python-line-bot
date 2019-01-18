@@ -61,7 +61,7 @@ def handle_message(event):
 # @handler.add(MessageEvent, message=TextMessage)
 # def handle_message(event):
 #     data = {
-#         "apikey" : DZZfRUiqAVPaWAohiTypko0kJpIVSChz,
+#         "apikey" : "DZZfRUiqAVPaWAohiTypko0kJpIVSChz",
 #         "query": event.message.text
 #     }
 #     data = urllib.parse.urlencode(data).encode("utf-8")
@@ -75,6 +75,6 @@ def handle_message(event):
 
 
 if __name__ == '__main__':
-    #app.run()
-     port = int(os.getenv("PORT", 5000))
-     app.run(host="0.0.0.0", port=port)
+    app.run()
+    #  port = int(os.getenv("PORT", 5000))
+    #  app.run(host="0.0.0.0", port=port)
