@@ -16,15 +16,11 @@ from linebot.models import (
 
 app = Flask(__name__)
 
+
+talk_api_key = os.getenv("TALK_API_KEY")
 channel_secret = os.getenv('YOUR_CHANNEL_SECRET', None)
 channel_access_token = os.getenv('YOUR_CHANNEL_ACCESS_TOKEN', None)
 
-if channel_secret is None:
-    print('Specify YOUR_CHANNEL_SECRET as environment variable.')
-    sys.exit(1)
-if channel_access_token is None:
-    print('Specify YOUR_CHANNEL_ACCESS_TOKEN as environment variable.')
-    sys.exit(1)
 
 line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
@@ -61,20 +57,23 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     data = {
-        "apikey" : "DZZfRUiqAVPaWAohiTypko0kJpIVSChz",
+        "apikey": talk_api_key,
         "query": event.message.text
     }
+
     data = urllib.parse.urlencode(data).encode("utf-8")
-    with urllib.request.urlpoen("https://api.a3rt.recruit-tech.co.jp/talk/v1/smalltalk", data=data) as res:
+    with urllib.request.urlopen("https://api.a3rt.recruit-tech.co.jp/talk/v1/smalltalk", data=data) as res:
+        #response = res.read().decode("utf-8")
         reply_json = json.loads(res.read().decode("unicode_escape"))
+
         if reply_json['status'] == 0:
             reply = reply_json['results'][0]['reply']
-            line-bot-api.reply_message(
+            line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text=reply())
+                TextSendMessage(text=reply))
 
 
 if __name__ == '__main__':
-    #app.run()
-      port = int(os.getenv("PORT", 5000))
-      app.run(host="0.0.0.0", port=port)
+    app.run()
+    #   port = int(os.getenv("PORT", 5000))
+    #   app.run(host="0.0.0.0", port=port)
