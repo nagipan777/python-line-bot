@@ -54,9 +54,20 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=event.message.text))
+    data = {
+        "apikey" : DZZfRUiqAVPaWAohiTypko0kJpIVSChz,
+        "qyery": event.message.text
+    }
+    data = urllib.parse.urlencode(data).encode("utf-8")
+    with urllib.request.urlpoen("https://api.a3rt.recruit-tech.co.jp/talk/v1/smalltalk", data=data) as res:
+        reply_json = json.loads(res.read().decode("unicode_escape"))
+        
+        if reply_json['status'] == 0:
+            reply = reply_json['results'][0]['reply']
+            line-bot-api.reply_message(
+                event.reply_token,
+                TextSendMessage(text=reply())
+
 
 if __name__ == "__main__":
 #    app.run()
